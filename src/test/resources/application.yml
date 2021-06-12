@@ -1,0 +1,19 @@
+spring:
+#  datasource:
+#    driver-class-name: oracle.jdbc.OracleDriver
+#    url: jdbc:oracle:thin:@127.0.0.1:1521:xe
+#    username: scott
+ #   password: tiger
+#
+ # jpa:
+  #  hibernate:
+   #   ddl-auto: create   #애플리케이션  실행시점에 내가가지고잇는 엔티티를지우고(테이블) 다시생성
+    #properties:
+     # hibernate:
+       # show_sql: true 엔 sout에 출력해서  안쓰는게좋다
+        #format_sql: true
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
