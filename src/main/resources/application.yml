@@ -5,6 +5,13 @@ spring:
     username: scott
     password: tiger
 
+  devtools:
+    livereload:
+      enabled: true
+
+  freemarker:
+    cache: false
+
   jpa:
     hibernate:
       ddl-auto: create   #애플리케이션  실행시점에 내가가지고잇는 엔티티를지우고(테이블) 다시생성
