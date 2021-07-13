@@ -2,6 +2,7 @@ package jpabook.jpashop.domain.item;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -17,8 +18,8 @@ public class Book extends Item{
     private String isbn;
 
 
-    public static Book createBookInfo(Long id,String name,int price,int stockQuantity,String author,String isbn){
 
+    public static Book createBookInfo(Long id,String name,int price,int stockQuantity,String author,String isbn){
         Book book = new Book();
         book.setId(id);
         book.setName(name);

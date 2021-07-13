@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookForm {
-
     private Long id;
     /*공통속성*/
     private String name;
