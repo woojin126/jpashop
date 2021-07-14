@@ -5,6 +5,8 @@ import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
+import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDto;
+import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +22,13 @@ import java.util.stream.Collectors;
 * Order
 * Order -> Member
 * Order -> Delievery */
+//V3 V4 는 차이점을 잘이용해서 사용하자, API 스펙에 테이블조회가 엄청 많고 크면 V4, 아니면 대부분 V3ㄴ
 @RestController
 @RequiredArgsConstructor
 public class OrderSimpleApiController {
 
     private final OrderRepository orderRepository;
+    private final OrderSimpleQueryRepository orderSimpleQueryRepository;
 
     /**
      * 1.엔티티를 이렇게 직접 노출하면 무슨문제가 발생할까? (무한루프)
@@ -57,7 +61,21 @@ public class OrderSimpleApiController {
         return new Result<>(collect);
 
     }
+    @GetMapping("/api/v3/simple-orders")
+    public List<SimpleOrderDto> ordersV3(){
+//fetch join은 MEMBER 객체와, DELIVERY 객체가 한번에 ORDER에담겨서 조회가됨
+        List<Order> orders = orderRepository.findAllWithMemberDelivery();
+        return orders.stream().map(SimpleOrderDto::new)
+                .collect(Collectors.toList());
 
+    }
+
+    //v4장점, 딲딱 원하는 필드만 가져올수있음, v3는 전부다 가져옴
+    // 에는 dto 를 조회하기때문에 비지니스로직 변경같은게 어려워  dto를 만진다고 db에 값이 변하진 않잖아?
+    @GetMapping("/api/v4/simple-orders")
+    public List<OrderSimpleQueryDto> ordersV4(){
+        return orderSimpleQueryRepository.findOrderDtos();
+    }
 
 
     @Data
@@ -86,14 +104,7 @@ public class OrderSimpleApiController {
     }
 
 
-    @GetMapping("/api/v3/simple-orders")
-    public List<SimpleOrderDto> ordersV3(){
-//fetch join은 MEMBER 객체와, DELIVERY 객체가 한번에 ORDER에담겨서 조회가됨
-        List<Order> orders = orderRepository.findAllWithMemberDelivery();
-        return orders.stream().map(SimpleOrderDto::new)
-                .collect(Collectors.toList());
 
-    }
 
 
 }
