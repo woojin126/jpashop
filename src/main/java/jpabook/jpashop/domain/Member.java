@@ -1,5 +1,6 @@
 package jpabook.jpashop.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,6 +30,7 @@ public class Member{
 
 
     /*거울이기때문에 여기값을 바꾼다고 order에 member 값이 바뀌지않음*/
+    //@JsonIgnore
     @OneToMany(mappedBy = "member") /*오더테이블에 member 필드에의해 맵핑 거울일뿐 */
     private List<Order> orders = new ArrayList<>(); //초기화한것은 가급적이면 건들이지말아라 set이나 그런걸로 바꾸면
                                                     //하이버네이트가이미 감싸놓은 값이 엉망이됨
