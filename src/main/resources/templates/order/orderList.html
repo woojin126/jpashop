@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head th:replace="fragments/header :: header"/>
 <body>
 <div class="container">
@@ -38,14 +38,25 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="item : ${orders}">
-                <td th:text="${item.id}"></td>
+            <tr th:each="order,i: ${orders}">
+                <div th:each="orderItem : ${order.orderItems}">
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${order.member.name}"></td>
+                    <td th:text="${orderItem.item.name}"></td>
+                    <td th:text="${orderItem.orderPrice}"></td>
+                    <td th:text="${orderItem.count}"></td>
+                    <td th:text="${order.status}"></td>
+                    <td th:text="${order.orderDate}"></td>
+                </div>
+
+        <!--        <td th:text="${item.id}"></td>
                 <td th:text="${item.member.name}"></td>
                 <td th:text="${item.orderItems[0].item.name}"></td>
                 <td th:text="${item.orderItems[0].orderPrice}"></td>
                 <td th:text="${item.orderItems[0].count}"></td>
                 <td th:text="${item.status}"></td>
-                <td th:text="${item.orderDate}"></td>
+                <td th:text="${item.orderDate}"></td>-->
+
                 <td>
                     <a th:if="${item.status.name() == 'ORDER'}" href="#"
                        th:href="'javascript:cancel('+${item.id}+')'"
