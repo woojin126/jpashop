@@ -23,31 +23,45 @@ public class OrderApiController {
     private final OrderRepository orderRepository;
 
     @GetMapping("/api/v1/orders")
-    public List<Order> ordersV1(){
+    public List<Order> ordersV1() {
         List<Order> all = orderRepository.findAllByCriteria(new OrderSearch());
         for (Order order : all) {
             order.getMember().getName();
             order.getDelivery().getAddress();
             List<OrderItem> orderItems = order.getOrderItems();
-            orderItems.stream().forEach(o -> o.getItem().getName());
+            orderItems.forEach(o -> o.getItem().getName());
         }
         return all;
     }
 
     @GetMapping("/api/v2/orders")
-    public List<OrderDto> ordersV2(){
+    public List<OrderDto> ordersV2() {
 
         List<Order> orders = orderRepository.findAllByCriteria(new OrderSearch());
 
         return orders.stream().map(OrderDto::new)
                 .collect(Collectors.toList());
 
+    }
+
+    /**
+     데이터 뻥튀기가됨 OrderItem 떄문에, postman 쿼리확인해보자
+     */
+    @GetMapping("/api/v3/orders")
+    public List<OrderDto> ordersV3() {
+        List<Order> orders = orderRepository.findAllWithItem();
+
+        return orders.stream()
+                .map(OrderDto::new)
+                .collect(Collectors.toList());
+
 
 
     }
 
-    @Data
-    static class OrderDto{
+
+        @Data
+    static class OrderDto {
 
         private Long orderId;
         private String name;
@@ -62,6 +76,7 @@ public class OrderApiController {
         protected OrderDto() {
 
         }
+
         public OrderDto(Order o) {
             orderId = o.getId();
             name = o.getMember().getName();
@@ -74,14 +89,14 @@ public class OrderApiController {
     }
 
     @Getter //이런식으로 고객이원하는 정보 몇가지만 딲딱 dto로 걸러서 출력
-    static class OrderItemDto{
+    static class OrderItemDto {
 
         private String itemName;//상품명
         private int orderPrice;//주문가셧
         private int count;//주문수량
 
 
-        public OrderItemDto(OrderItem orderItem){
+        public OrderItemDto(OrderItem orderItem) {
             itemName = orderItem.getItem().getName();
             orderPrice = orderItem.getOrderPrice();
             count = orderItem.getCount();
