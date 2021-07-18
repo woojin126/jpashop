@@ -6,10 +6,13 @@ import jpabook.jpashop.domain.OrderItem;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
+import jpabook.jpashop.repository.order.query.OrderQueryDto;
+import jpabook.jpashop.repository.order.query.OrderQueryRepository;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 public class OrderApiController {
 
     private final OrderRepository orderRepository;
+    private final OrderQueryRepository orderQueryRepository;
 
     @GetMapping("/api/v1/orders")
     public List<Order> ordersV1() {
@@ -46,6 +50,9 @@ public class OrderApiController {
 
     /**
      데이터 뻥튀기가됨 OrderItem 떄문에, postman 쿼리확인해보자
+     fetch join의 치명적인 단점,,일대 다를 fetch join하는순간 페이징쿼리가 안나감.. 못씀
+     ,단점은 중복이 너무많음 일대다를 패치조인하면 db확인하면 알수있다.
+     이건 쿼리가 한방만 나가지만 너무많은 중복
      */
     @GetMapping("/api/v3/orders")
     public List<OrderDto> ordersV3() {
@@ -55,10 +62,29 @@ public class OrderApiController {
                 .map(OrderDto::new)
                 .collect(Collectors.toList());
 
-
-
     }
 
+    /**
+     * order, orderItem , item 의 관계가 @BatchSize 설정하나로인해
+     * 1        다대        다 의관계가
+     * 일 대 일대 일 관계가되버림;
+     * (이것은 v3 보다 쿼리가좀더 나가지만 정말 필요한 최적의 쿼리만 뽑아낸다는장점)
+     * v3보다 이방식이 좋은거같음 (페이징도 가능)
+     */
+    @GetMapping("/api/v3.1/orders")
+    public List<OrderDto> ordersV3_page(
+            @RequestParam(value = "offset", defaultValue = "0") int offset,
+            @RequestParam(value = "limit", defaultValue = "100") int limit ) {
+        List<Order> orders = orderRepository.findAllWithMemberDelivery(offset,limit);
+        return orders.stream()
+                .map(OrderDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/api/v4/orders")
+    public List<OrderQueryDto> ordersV4(){
+        return orderQueryRepository.findOrderQueryDtos();
+    }
 
         @Data
     static class OrderDto {
