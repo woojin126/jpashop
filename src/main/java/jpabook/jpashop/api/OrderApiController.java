@@ -45,7 +45,6 @@ public class OrderApiController {
 
         return orders.stream().map(OrderDto::new)
                 .collect(Collectors.toList());
-
     }
 
     /**
@@ -81,12 +80,21 @@ public class OrderApiController {
                 .collect(Collectors.toList());
     }
 
+    //dto 직접 조회
+    //여러테이블에서 데이터를 일부 조회하거나 통계성 데이터를 낼때 dto 직접조회를 많이쓴다.
     @GetMapping("/api/v4/orders")
     public List<OrderQueryDto> ordersV4(){
         return orderQueryRepository.findOrderQueryDtos();
     }
 
-        @Data
+    //여러테이블에서 데이터를 일부 조회하거나 통계성 데이터를 낼때 dto 직접조회를 많이쓴다. v4의 N+1 문제 까지해결
+    @GetMapping("/api/v5/orders")
+    public List<OrderQueryDto> ordersV5(){
+        return orderQueryRepository.findAllByDto_optimization();
+    }
+
+
+    @Data
     static class OrderDto {
 
         private Long orderId;
