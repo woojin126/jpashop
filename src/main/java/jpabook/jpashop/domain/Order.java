@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,6 +26,7 @@ public class Order {
     @JoinColumn(name = "member_id")/*연관 관게의 주인으로 설정*/
     private Member member; /*주문 회원에대한 정보 맵핑*/
 
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     //Order을 퍼시스트하면 자동으로 그아래 orderItems도 자동 퍼시스트해줌(원래형식이라면 일일히 다해줘야함 퍼시스트)ㄴ
     private List<OrderItem> orderItems = new ArrayList<>();
