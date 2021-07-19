@@ -61,14 +61,14 @@ public class OrderSimpleApiController {
         return new Result<>(collect);
 
     }
-    @GetMapping("/api/v3/simple-orders")
+ /*   @GetMapping("/api/v3/simple-orders")
     public List<SimpleOrderDto> ordersV3(){
 //fetch join은 MEMBER 객체와, DELIVERY 객체가 한번에 ORDER에담겨서 조회가됨
         List<Order> orders = orderRepository.findAllWithMemberDelivery();
         return orders.stream().map(SimpleOrderDto::new)
                 .collect(Collectors.toList());
 
-    }
+    }*/
 
     //v4장점, 딲딱 원하는 필드만 가져올수있음, v3는 전부다 가져옴
     // 에는 dto 를 조회하기때문에 비지니스로직 변경같은게 어려워  dto를 만진다고 db에 값이 변하진 않잖아?
