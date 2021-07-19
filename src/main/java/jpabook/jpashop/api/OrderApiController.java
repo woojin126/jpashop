@@ -6,6 +6,7 @@ import jpabook.jpashop.domain.OrderItem;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
+import jpabook.jpashop.repository.order.query.OrderFlatDto;
 import jpabook.jpashop.repository.order.query.OrderQueryDto;
 import jpabook.jpashop.repository.order.query.OrderQueryRepository;
 import lombok.Data;
@@ -85,12 +86,23 @@ public class OrderApiController {
     @GetMapping("/api/v4/orders")
     public List<OrderQueryDto> ordersV4(){
         return orderQueryRepository.findOrderQueryDtos();
+
     }
+
 
     //여러테이블에서 데이터를 일부 조회하거나 통계성 데이터를 낼때 dto 직접조회를 많이쓴다. v4의 N+1 문제 까지해결
     @GetMapping("/api/v5/orders")
     public List<OrderQueryDto> ordersV5(){
         return orderQueryRepository.findAllByDto_optimization();
+    }
+
+ /* v5는 쿼리 두방이면 이건 1방으로 최적화
+  오더와 오더아이템을 join해서 그냥 한방에가져옴
+  결국 한방쿼리라 데이터 뻥튀기가일어남.. 페이징이 가능할까   X ..
+  */
+    @GetMapping("/api/v6/orders")
+    public List<OrderFlatDto> ordersV6(){
+        return orderQueryRepository.findAllByDto_flat();
     }
 
 
