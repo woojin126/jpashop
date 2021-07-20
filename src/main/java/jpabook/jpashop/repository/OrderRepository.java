@@ -1,6 +1,8 @@
 package jpabook.jpashop.repository;
 
-import jpabook.jpashop.domain.Member;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jpabook.jpashop.domain.*;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDto;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,38 @@ public class OrderRepository {
 
     public Order findOne(Long id){
         return em.find(Order.class,id);
+    }
+
+    public List<Order> findAll(OrderSearch orderSearch){
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        QOrder order = QOrder.order;
+        QMember member = QMember.member;
+
+
+
+        return query.select(order)
+                .from(order)
+                .join(order.member, member)
+                .where(statusEq(orderSearch.getOrderStatus()), nameLike(orderSearch.getMemberName()))
+                .limit(1000)
+                .fetch();
+
+    }
+
+    private BooleanExpression nameLike(String memberName) {
+
+        if (!StringUtils.hasText(memberName)) {
+            return null;
+        }
+
+        return QMember.member.name.like(memberName);
+    }
+
+    private BooleanExpression statusEq(OrderStatus statusCond){
+        if( statusCond == null){
+            return null;
+        }
+        return QOrder.order.status.eq(statusCond);
     }
 
     public List<Order> findAllByCriteria(OrderSearch orderSearch) {
@@ -81,7 +115,7 @@ public class OrderRepository {
         /*     .setFirstResult(0)
                 .setMaxResults(100)*/
         return em.createQuery(
-                "select o from Order o " +
+                "select distinct o from Order o " +
                         " join fetch o.member m " +
                         " join fetch o.delivery d " +
                         " join fetch  o.orderItems oi " +
