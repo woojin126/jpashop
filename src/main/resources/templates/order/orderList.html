@@ -49,17 +49,17 @@
                     <td th:text="${order.orderDate}"></td>
                 </div>
 
-        <!--        <td th:text="${item.id}"></td>
+       <!--      <td th:text="${item.id}"></td>
                 <td th:text="${item.member.name}"></td>
                 <td th:text="${item.orderItems[0].item.name}"></td>
                 <td th:text="${item.orderItems[0].orderPrice}"></td>
                 <td th:text="${item.orderItems[0].count}"></td>
                 <td th:text="${item.status}"></td>
-                <td th:text="${item.orderDate}"></td>-->
-
+                <td th:text="${item.orderDate}"></td>
+-->
                 <td>
-                    <a th:if="${item.status.name() == 'ORDER'}" href="#"
-                       th:href="'javascript:cancel('+${item.id}+')'"
+                    <a th:if="${order.status.name() == 'ORDER'}" href="#"
+                       th:href="'javascript:cancel('+${order.id}+')'"
                        class="btn btn-danger">CANCEL</a>
                 </td>
             </tr>
