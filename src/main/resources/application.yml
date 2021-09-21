@@ -1,13 +1,27 @@
 spring:
   datasource:
-    driver-class-name: oracle.jdbc.OracleDriver
-    url: jdbc:oracle:thin:@127.0.0.1:1521:xe
-    username: scott
-    password: tiger
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/jpashops?autoReconnect=true&serverTimezone=Asia/Seoul&characterEncoding=utf8
+    username: woojin
+    password: 47429468bb@
+
+
+
+
+
+
+  #driver-class-name: oracle.jdbc.OracleDriver
+    #url: jdbc:oracle:thin:@127.0.0.1:1521:xe
+    #username: scott
+    #password: tiger
 
   devtools:
     livereload:
       enabled: true
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
 
   freemarker:
     cache: false
@@ -20,6 +34,11 @@ spring:
         #show_sql: true 엔 sout에 출력해서  안쓰는게좋다
         format_sql: true
         default_batch_fetch_size: 100
+
+    database: mysql
+
+
+
 logging:
   level:
     org.hibernate.SQL: debug
