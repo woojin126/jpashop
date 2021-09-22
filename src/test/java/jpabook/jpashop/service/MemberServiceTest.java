@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 @Transactional //기본적으로 테스트가끝나면 롤백을해버리기떄문에 insert문이 안보임(테스트에서만 롤백하는것)
 public class MemberServiceTest {
 
-    @Autowired MemberService memberService;
+ /*   @Autowired MemberService memberService;
     @Autowired MemberRepository memberRepository;
     @Autowired EntityManager em; //insert 과정을 보고싶으면 flush 이용
 
@@ -35,9 +35,9 @@ public class MemberServiceTest {
         Long join = memberService.join(member);
         //then
         em.flush();
-        /*Transaction commit 이 일어날 때 flush가 동작하는데,
+        *//*Transaction commit 이 일어날 때 flush가 동작하는데,
         이때 쓰기 지연 저장소에 쌓아 놨던 INSERT, UPDATE, DELETE SQL들이 DB에 날라간다.
-        영속성 컨텍스트의 변경 내용을 DB 에 반영하는 것을 말한다. */
+        영속성 컨텍스트의 변경 내용을 DB 에 반영하는 것을 말한다. *//*
         Assert.assertEquals(member,memberRepository.findOne(join));
 
     }
@@ -55,12 +55,12 @@ public class MemberServiceTest {
         //when
         memberService.join(member1);
         memberService.join(member2);
-   /*    try { 위에 expect에적으면 안적어도됨
+   *//*    try { 위에 expect에적으면 안적어도됨
              memberService.join(member2);
         } catch (IllegalStateException e){
             return;
-        }*/
+        }*//*
         //then
         fail("예외가 발생해야 한다.");
-    }
+    }*/
 }

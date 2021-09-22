@@ -26,7 +26,7 @@ import static org.assertj.core.api.Fail.fail;
 public class OrderServiceTest {
 
 
-    @Autowired
+  /*  @Autowired
     EntityManager em;
     @Autowired
     OrderService orderService;
@@ -107,5 +107,5 @@ public class OrderServiceTest {
         book.setStockQuantity(stockQuantity);
         em.persist(book);
         return book;
-    }
+    }*/
 }

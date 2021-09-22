@@ -74,7 +74,7 @@ public class OrderApiController {
     @GetMapping("/api/v3.1/orders")
     public List<OrderDto> ordersV3_page(
             @RequestParam(value = "offset", defaultValue = "0") int offset,
-            @RequestParam(value = "limit", defaultValue = "100") int limit ) {
+            @RequestParam(value = "limit", defaultValue = "1") int limit ) {
         List<Order> orders = orderRepository.findAllWithMemberDelivery(offset,limit);
         return orders.stream()
                 .map(OrderDto::new)

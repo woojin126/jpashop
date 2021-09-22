@@ -29,7 +29,6 @@ public class OrderQueryRepository {
     }
 
 
-
     public List<OrderQueryDto> findAllByDto_optimization() {
         List<OrderQueryDto> result = findOrders();
 
@@ -40,7 +39,7 @@ public class OrderQueryRepository {
         List<OrderItemQueryDto> orderItems = em.createQuery(
                 "select new jpabook.jpashop.repository.order.query.OrderItemQueryDto " +
                         " ( oi.order.id, i.name, oi.orderPrice, oi.count  )" +
-                        "from OrderItem oi " +
+                        " from OrderItem oi " +
                         " join oi.item i " +
                         " where oi.order.id in :orderIds ", OrderItemQueryDto.class)
                 .setParameter("orderIds", orderIds)
@@ -81,6 +80,8 @@ public class OrderQueryRepository {
                         "from Order o " +
                         " join o.member m " +
                         " join o.delivery d ", OrderQueryDto.class)
+                .setFirstResult(0)
+                .setMaxResults(3)
                 .getResultList();
     }
 
